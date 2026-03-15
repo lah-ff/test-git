@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="b1" x1="65" y1="34" x2="728" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE1A8"/>
+      <stop offset="1" stop-color="#FF8D61"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" rx="28" fill="url(#b1)"/>
+  <circle cx="156" cy="108" r="56" fill="#FFF7E5" fill-opacity="0.7"/>
+  <circle cx="658" cy="124" r="50" fill="#FFF7E5" fill-opacity="0.62"/>
+  <circle cx="399" cy="216" r="74" fill="#2A9E73" fill-opacity="0.35"/>
+  <path d="M83 394C214 287 356 275 475 333C557 373 641 404 729 394" stroke="#FFF9EB" stroke-width="5" stroke-linecap="round"/>
+  <path d="M398 120L409 163L451 175L414 198L420 241L386 216L347 235L359 194L325 168L369 160L398 120Z" fill="#FFF4D7"/>
+  <text x="400" y="430" text-anchor="middle" font-size="46" fill="#234434" font-family="Microsoft YaHei, sans-serif">福气满满</text>
+</svg>

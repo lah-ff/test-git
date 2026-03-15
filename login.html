@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>祝福登录页</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1b2f24;
+      --gold: #f4b841;
+      --sun: #ff7b42;
+      --leaf: #36a87a;
+      --paper: rgba(255, 252, 244, 0.88);
+      --shadow: 0 20px 45px rgba(12, 25, 20, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: "Noto Serif SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background-image:
+        linear-gradient(125deg, rgba(255, 191, 108, 0.45), rgba(64, 163, 128, 0.45)),
+        url("./assets/bg-main.svg"),
+        url("./assets/bg-overlay.svg");
+      background-size: cover, cover, 1200px;
+      background-position: center, center, center;
+      background-repeat: no-repeat;
+      overflow-x: hidden;
+    }
+
+    .spark {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle at 10% 15%, rgba(255, 255, 255, 0.65) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.6) 0 2px, transparent 3px),
+        radial-gradient(circle at 65% 75%, rgba(255, 255, 255, 0.5) 0 3px, transparent 4px),
+        radial-gradient(circle at 25% 85%, rgba(255, 255, 255, 0.45) 0 2px, transparent 3px);
+      animation: drift 8s ease-in-out infinite alternate;
+      opacity: 0.7;
+    }
+
+    .page-shell {
+      width: min(980px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      animation: riseIn 0.8s ease both;
+    }
+
+    .panel {
+      background: var(--paper);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .panel h1,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-family: "ZCOOL KuaiLe", "Microsoft YaHei", cursive;
+      letter-spacing: 1px;
+      color: #183f2f;
+    }
+
+    .panel p {
+      margin: 0 0 16px;
+      line-height: 1.7;
+      font-size: 15px;
+      color: #2f493b;
+    }
+
+    .input-wrap {
+      margin: 0 0 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #395c49;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid rgba(54, 168, 122, 0.4);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.82);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    input:focus {
+      border-color: var(--sun);
+      box-shadow: 0 0 0 3px rgba(255, 123, 66, 0.18);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 6px;
+      color: #fff9ea;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(90deg, #ff8a3d, #e1572a, #2ea971);
+      background-size: 200% 100%;
+      animation: glow 5s linear infinite;
+      box-shadow: 0 12px 20px rgba(226, 88, 45, 0.26);
+    }
+
+    .hint {
+      min-height: 22px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #ad4321;
+    }
+
+    .result {
+      display: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result.show {
+      display: block;
+      animation: riseIn 0.6s ease both;
+    }
+
+    .hello {
+      margin-top: 8px;
+      margin-bottom: 10px;
+      font-family: "ZCOOL KuaiLe", "Microsoft YaHei", cursive;
+      font-size: clamp(30px, 4.4vw, 48px);
+      line-height: 1.2;
+      color: #de5129;
+      text-shadow: 0 8px 18px rgba(225, 87, 42, 0.25);
+    }
+
+    .blessing-text {
+      background: rgba(255, 255, 255, 0.72);
+      border-left: 4px solid var(--leaf);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 14px;
+      color: #294536;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .secondary-btn {
+      width: auto;
+      margin-top: 0;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      box-shadow: none;
+      background: linear-gradient(90deg, #2ea971, #2a8c62);
+    }
+
+    .blessing-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .blessing-gallery img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(16, 32, 26, 0.2);
+      transform: translateY(0);
+      transition: transform 0.28s ease;
+    }
+
+    .blessing-gallery img:hover {
+      transform: translateY(-4px);
+    }
+
+    .decor {
+      position: absolute;
+      right: -34px;
+      top: -36px;
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 249, 230, 0.95), rgba(255, 150, 74, 0.75));
+      filter: blur(1px);
+      opacity: 0.85;
+    }
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes glow {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    @keyframes drift {
+      from {
+        transform: translateY(-6px);
+      }
+      to {
+        transform: translateY(6px);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .page-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .blessing-gallery img {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="spark"></div>
+  <main class="page-shell">
+    <section class="panel">
+      <h1>每天开心加油站</h1>
+      <p>输入账号和密码，点亮专属祝福。</p>
+      <form id="loginForm">
+        <div class="input-wrap">
+          <label for="account">账号</label>
+          <input id="account" name="account" type="text" placeholder="请输入账号" autocomplete="username" required />
+        </div>
+        <div class="input-wrap">
+          <label for="password">密码</label>
+          <input id="password" name="password" type="password" placeholder="请输入密码" autocomplete="current-password" required />
+        </div>
+        <button type="submit">登录并查看祝福</button>
+        <p class="hint" id="hint"></p>
+      </form>
+    </section>
+
+    <section class="panel result" id="resultPanel" aria-live="polite">
+      <div class="decor"></div>
+      <h2>登录成功</h2>
+      <div class="hello" id="helloText">hello李如飞</div>
+      <p class="blessing-text" id="blessingText">
+        愿你日日有光，事事顺意；愿你的努力都被看见，你的梦想都能在春风里开花。
+      </p>
+      <div class="actions">
+        <button type="button" class="secondary-btn" id="switchBlessingBtn">换一句祝福</button>
+      </div>
+      <div class="blessing-gallery">
+        <img src="./assets/bless-1.svg" alt="祝福烟花图片" />
+        <img src="./assets/bless-2.svg" alt="祝福灯笼图片" />
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const hint = document.getElementById("hint");
+    const resultPanel = document.getElementById("resultPanel");
+    const helloText = document.getElementById("helloText");
+    const blessingText = document.getElementById("blessingText");
+    const switchBlessingBtn = document.getElementById("switchBlessingBtn");
+
+    const blessings = [
+      "愿你日日有光，事事顺意；愿你的努力都被看见，你的梦想都能在春风里开花。",
+      "愿你今天比昨天更勇敢一点，明天比今天更自由一点，所有期待都如约而至。",
+      "愿你抬头见喜、低头有暖，脚下每一步都走向心之所向。",
+      "愿你把平凡的日子过成诗，把忙碌的时光过成光，处处都有好消息。",
+      "愿你心里有火、眼里有光，前路有花开，身后有清风。"
+    ];
+
+    let audioContext;
+
+    function pickRandomBlessing() {
+      const index = Math.floor(Math.random() * blessings.length);
+      return blessings[index];
+    }
+
+    function applyRandomBlessing() {
+      blessingText.textContent = pickRandomBlessing();
+    }
+
+    function playBlessingMusic() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) {
+        return;
+      }
+
+      if (!audioContext) {
+        audioContext = new AudioCtx();
+      }
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume().catch(() => {});
+      }
+
+      const notes = [523.25, 659.25, 783.99, 659.25, 698.46, 783.99, 880, 783.99];
+      const durations = [0.18, 0.18, 0.22, 0.2, 0.18, 0.22, 0.26, 0.3];
+      let cursor = audioContext.currentTime + 0.02;
+
+      notes.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        const endTime = cursor + durations[index];
+
+        oscillator.type = "triangle";
+        oscillator.frequency.value = frequency;
+        gainNode.gain.setValueAtTime(0.0001, cursor);
+        gainNode.gain.exponentialRampToValueAtTime(0.12, cursor + 0.03);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, endTime);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.start(cursor);
+        oscillator.stop(endTime + 0.02);
+
+        cursor = endTime;
+      });
+    }
+
+    switchBlessingBtn.addEventListener("click", () => {
+      applyRandomBlessing();
+    });
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const account = document.getElementById("account").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!account || !password) {
+        hint.textContent = "请输入完整账号和密码后再登录。";
+        resultPanel.classList.remove("show");
+        return;
+      }
+
+      hint.textContent = "登录成功，祝福已送达。";
+      helloText.textContent = "hello李如飞";
+      applyRandomBlessing();
+      resultPanel.classList.add("show");
+      playBlessingMusic();
+    });
+  </script>
+</body>
+</html>
